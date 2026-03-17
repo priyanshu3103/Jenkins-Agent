@@ -73,12 +73,12 @@ jobs:
         with:
           repository: ${{ env.ARGOCD_REPO }}
           token: ${{ secrets.ARGOCD_REPO_TOKEN }}
-          path: argocd-repo
+          path: dev-argocd
 
       # ============ UPDATE HELM VALUES ============
       - name: Update image tags in values.yaml
         run: |
-          cd argocd-repo
+          cd dev-argocd
 
           # Update frontend tag
           sed -i "s|tag:.*# frontend|tag: ${{ steps.tag.outputs.tag }} # frontend|g" \
@@ -94,7 +94,7 @@ jobs:
       # ============ COMMIT AND PUSH ============
       - name: Commit and push values.yaml
         run: |
-          cd argocd-repo
+          cd dev-argocd
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add ${{ env.VALUES_FILE }}
