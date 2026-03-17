@@ -21,7 +21,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     outputs:
-      tag: ${{ steps.tag.outputs.tag }}    # ← pass tag to deploy job
+      tag: ${{ steps.tag.outputs.tag }}
 
     steps:
       # ============ CHECKOUT ============
@@ -34,11 +34,14 @@ jobs:
         run: |
           if [ -n "${{ github.event.inputs.tag }}" ]; then
             echo "tag=${{ github.event.inputs.tag }}" >> $GITHUB_OUTPUT
+            echo "✅ Image tag: ${{ github.event.inputs.tag }}"
           else
-            SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
-            echo "tag=${SHORT_SHA}" >> $GITHUB_OUTPUT
+            BRANCH=$(echo ${{ github.ref_name }} | sed 's/\//-/g')
+            SHORT_SHA=$(git rev-parse --short=7 HEAD)
+            TAG="${BRANCH}-${SHORT_SHA}"
+            echo "tag=${TAG}" >> $GITHUB_OUTPUT
+            echo "✅ Image tag: ${TAG}"
           fi
-          echo "✅ Image tag: ${{ steps.tag.outputs.tag }}"
 
       # ============ LOGIN TO DOCKERHUB ============
       - name: Login to DockerHub
@@ -76,8 +79,8 @@ jobs:
   # ============ JOB 2 - DEPLOY ============
   deploy:
     runs-on: ubuntu-latest
-    needs: build    # ← runs after build job
-    
+    needs: build
+
     steps:
       # ============ CHECKOUT ARGOCD REPO ============
       - name: Checkout ArgoCD repo
@@ -91,21 +94,21 @@ jobs:
       - name: Update image tags in values.yaml
         run: |
           cd dev-argocd
-          sed -i "s|tag:.*# frontend|tag: ${{ needs.build.outputs.tag }} # frontend|g" ${{ env.VALUES_FILE }}
-          sed -i "s|tag:.*# backend|tag: ${{ needs.build.outputs.tag }} # backend|g" ${{ env.VALUES_FILE }}
-          echo "✅ Updated image tags to ${{ needs.build.outputs.tag }}"
+          TAG="${{ needs.build.outputs.tag }}"
+          sed -i "s|tag: .* # frontend|tag: ${TAG} # frontend|g" ${{ env.VALUES_FILE }}
+          sed -i "s|tag: .* # backend|tag: ${TAG} # backend|g" ${{ env.VALUES_FILE }}
+          echo "✅ Updated image tags to ${TAG}"
 
-        # ============ COMMIT AND PUSH CHANGES ============
-
+      # ============ COMMIT AND PUSH ============
       - name: Commit and push values.yaml
         env:
-            TOKEN: ${{ secrets.ARGOCD_REPO_TOKEN }}
+          TOKEN: ${{ secrets.ARGOCD_REPO_TOKEN }}
         run: |
-            cd dev-argocd
-            git config user.name "GitHub Actions"
-            git config user.email "actions@github.com"
-            git remote set-url origin https://${{ github.actor }}:${TOKEN}@github.com/${{ env.ARGOCD_REPO }}.git
-            git add ${{ env.VALUES_FILE }}
-            git commit -m "chore: update jenkins-agent image tags to ${{ needs.build.outputs.tag }}" || exit 0
-            git push origin master
-            echo "✅ Pushed to ${{ env.ARGOCD_REPO }}"
+          cd dev-argocd
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git remote set-url origin https://${{ github.actor }}:${TOKEN}@github.com/${{ env.ARGOCD_REPO }}.git
+          git add ${{ env.VALUES_FILE }}
+          git commit -m "chore: update jenkins-agent image tags to ${{ needs.build.outputs.tag }}" || exit 0
+          git push origin master
+          echo "✅ Pushed to ${{ env.ARGOCD_REPO }}"
