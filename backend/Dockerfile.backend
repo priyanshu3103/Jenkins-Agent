@@ -5,7 +5,17 @@ WORKDIR /app
 # Install dependencies first (cached layer)
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
- 
+
+# Set environment variables for Jenkins and Geminie API key
+ENV JENKINS_USER=$JENKINS_ID
+ENV JENKINS_TOKEN=$JENKINS_CREDS
+ENV JENKINS_URL=$JENKINS_HOST
+ENV JENKINS_JOBS=$JENKINS_JOBS
+ENV GEMINIE_API_KEY=$AGENT_API_KEY
+ENV GEMINI_MODEL=$GEMINI_MODEL
+ENV SLACK_WEBHOOK_URL=$SLACK_WEBHOOK_URL
+ENV SLACK_CHANNEL=$SLACK_CHANNEL
+
 # Copy source
 COPY agent.py .
 #COPY .env .
