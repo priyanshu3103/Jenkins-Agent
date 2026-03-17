@@ -94,9 +94,10 @@ jobs:
       # ============ COMMIT AND PUSH ============
       - name: Commit and push values.yaml
         run: |
-          cd dev-argocd
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git add ${{ env.VALUES_FILE }}
-          git commit -m "chore: update jenkins-agent image tags to ${{ steps.tag.outputs.tag }}" || exit 0
-          git push origin master
+            cd dev-argocd
+            git config user.name "GitHub Actions"
+            git config user.email "actions@github.com"
+            git remote set-url origin https://x-access-token:${{ secrets.ARGOCD_REPO_TOKEN }}@github.com/${{ env.ARGOCD_REPO }}.git
+            git add ${{ env.VALUES_FILE }}
+            git commit -m "chore: update jenkins-agent image tags to ${{ steps.tag.outputs.tag }}" || exit 0
+            git push origin master
