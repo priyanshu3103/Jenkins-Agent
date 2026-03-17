@@ -1,0 +1,230 @@
+# Jenkins Build Failure AI Agent 🤖
+
+Automatically detects Jenkins build failures, identifies the responsible
+developer using git change tracking, and posts rich Slack notifications
+powered by Gemini AI.
+
+---
+
+## What it does
+
+1. **Polls Jenkins** every N minutes for failed builds  
+2. **Fetches** the console log + commit history for each new failure  
+3. **Asks Gemini** to identify root cause, responsible dev, severity, and fix  
+4. **Posts to Slack** with a rich Block Kit card  
+5. **Remembers** seen builds so it never double-alerts after a restart  
+
+---
+
+## Slack output example
+
+```
+🔴  BUILD FAILURE  |  payment-service #901  |  Critical
+──────────────────────────────────────────────────────
+  Responsible  : Priya Sharma <priya.sharma@corp.com>
+  Root Cause   : NullPointerException in PaymentRetryService.java:87
+  Category     : test_failure
+  Fix Time est : 45 minutes
+
+  Why them?
+  Priya's commit a3f8c12 introduced the retry logic that is
+  throwing NullPointerException when the payment object is null.
+
+  Fix:
+  1. Add a null-check before calling processRetry() on line 87
+  2. Return early or throw a checked exception instead
+  3. Add a unit test covering the null-payment edge case
+
+  Tags: `build-failure` `payment-service` `null-pointer`
+
+  [🔗 View Build]
+```
+
+---
+
+## Quick start
+
+```bash
+# 1. Clone / copy files
+git clone https://github.com/yourorg/jenkins-agent
+cd jenkins-agent
+
+# 2. Install dependencies
+pip install -r requirements.txt
+
+# 3. Configure
+cp .env.example .env
+# Edit .env with your Jenkins URL, API token, Slack webhook, etc.
+
+# 4. Run
+python agent.py
+```
+
+---
+
+## Configuration (.env)
+
+| Variable            | Required | Description                                              |
+|---------------------|----------|----------------------------------------------------------|
+| `JENKINS_URL`       | ✅        | Base URL, e.g. `https://jenkins.yourcompany.com`        |
+| `JENKINS_USER`      | ✅        | Jenkins username                                         |
+| `JENKINS_TOKEN`     | ✅        | Jenkins API token (see below)                            |
+| `SLACK_WEBHOOK_URL` | ✅        | Incoming Webhook URL from Slack app                      |
+| `SLACK_CHANNEL`     | ✅        | Target channel, e.g. `#build-alerts`                    |
+| `ANTHROPIC_API_KEY` | ✅        | Gemini API key from console.anthropic.com               |
+| `POLL_INTERVAL_SEC` | ➖        | Seconds between polls (default: `300`)                   |
+| `JENKINS_JOBS`      | ➖        | Comma-separated job names; empty = watch all             |
+| `SEEN_BUILDS_FILE`  | ➖        | Path for persisting seen builds (default: `seen_builds.json`) |
+
+---
+
+## Jenkins API token setup
+
+1. Log in to Jenkins → click your name (top right) → **Configure**  
+2. Scroll to **API Token** → **Add new Token** → copy it  
+3. Minimum permissions needed:  
+   - `Overall / Read`  
+   - `Job / Read`  
+   - `Run / Artifacts` (for console logs)  
+
+---
+
+## Slack Incoming Webhook setup
+
+1. Go to https://api.slack.com/apps  
+2. Create app → **Incoming Webhooks** → activate → **Add New Webhook**  
+3. Choose a channel → copy the webhook URL into `.env`  
+
+---
+
+## Run as a systemd service (Linux)
+
+```bash
+# Copy files
+sudo mkdir -p /opt/jenkins-agent
+sudo cp agent.py requirements.txt .env /opt/jenkins-agent/
+
+# Create dedicated user
+sudo useradd -r -s /bin/false jenkins-agent
+sudo chown -R jenkins-agent:jenkins-agent /opt/jenkins-agent
+
+# Install service
+sudo cp jenkins-agent.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable jenkins-agent
+sudo systemctl start jenkins-agent
+
+# Check logs
+sudo journalctl -u jenkins-agent -f
+```
+
+---
+
+## Run with Docker
+
+```dockerfile
+FROM python:3.12-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY agent.py .
+CMD ["python", "agent.py"]
+```
+
+```bash
+docker build -t jenkins-agent .
+docker run -d --env-file .env --name jenkins-agent jenkins-agent
+```
+
+---
+
+## Architecture
+
+```
+┌─────────────────┐         ┌──────────────────┐        ┌────────────────┐
+│                 │  poll   │                  │ Gemini │                │
+│  Jenkins API    │────────▶│   agent.py       │───────▶│  Anthropic API │
+│  /api/json      │         │                  │        │  Gemini  │
+│  /consoleText   │         │  • fetch builds  │        │                │
+└─────────────────┘         │  • deduplicate   │        └────────────────┘
+                            │  • analyze       │               │
+┌─────────────────┐         │  • notify        │◀──────────────┘
+│                 │◀────────│                  │  structured JSON
+│  Slack          │  Block  └──────────────────┘
+│  #build-alerts  │   Kit        │
+└─────────────────┘         seen_builds.json
+```
+
+
+# Jenkins Failure Agent — Docker Setup
+
+## Project Structure
+```
+jenkins-failure-agent/
+├── backend/
+│   ├── agent.py
+│   ├── requirements.txt
+│   ├── Dockerfile.backend
+│   ├── .dockerignore
+│   └── .env                  ← create from .env.example
+├── frontend/
+│   ├── src/
+│   │   └── pages/JenkinsAgent.jsx
+│   ├── Dockerfile.frontend
+│   ├── nginx.conf
+│   ├── .dockerignore
+│   └── vite.config.js
+└── docker-compose.yml
+```
+
+## Quick Start
+
+### 1. Set up your .env
+```bash
+cp .env.example backend/.env
+# Edit backend/.env with your real values:
+#   JENKINS_URL=http://host.docker.internal:8080   ← Jenkins on host machine
+#   JENKINS_TOKEN=your_token
+#   GEMINI_API_KEY=your_key
+```
+
+### 2. Build and start
+```bash
+docker-compose up --build
+```
+
+### 3. Open the UI
+```
+http://localhost:3000
+```
+Backend URL to enter in the UI connect screen: `http://localhost:8000`
+
+---
+
+## Commands
+
+| Command | Description |
+|---|---|
+| `docker-compose up --build` | Build images and start |
+| `docker-compose up -d` | Start in background |
+| `docker-compose down` | Stop containers |
+| `docker-compose logs -f backend` | Watch backend logs |
+| `docker-compose logs -f frontend` | Watch frontend logs |
+| `docker-compose restart backend` | Restart backend only |
+| `docker-compose down -v` | Stop and wipe volumes |
+
+## Jenkins on Host Machine
+
+If Jenkins runs on your local machine (not in Docker), use:
+```env
+JENKINS_URL=http://host.docker.internal:8080
+```
+This is a Docker special hostname that resolves to your host machine.
+
+## Ports
+
+| Service | Port |
+|---|---|
+| Frontend (UI) | http://localhost:3000 |
+| Backend (API) | http://localhost:8000 |
+| Jenkins (host) | http://localhost:8080 |

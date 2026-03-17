@@ -1,0 +1,45 @@
+version: "3.9"
+
+services:
+
+  # ── Python backend (FastAPI + Jenkins poller + Gemini) ─────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.backend
+    container_name: jenkins-agent-backend
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    environment:
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+    volumes:
+      - agent_data:/app/data          # persists seen_builds.json & agent.log
+    ports:
+      - "8000:8000"                   # expose for direct access / debugging
+    networks:
+      - jenkins-agent-net
+    extra_hosts:
+      - "host.docker.internal:host-gateway"   # lets backend reach Jenkins on host
+
+  # ── React frontend (nginx) ─────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.frontend
+    container_name: jenkins-agent-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"                     # visit http://localhost:3000
+    depends_on:
+      - backend
+    networks:
+      - jenkins-agent-net
+
+volumes:
+  agent_data:
+
+networks:
+  jenkins-agent-net:
+    driver: bridge

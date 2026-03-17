@@ -1,0 +1,17 @@
+FROM python:3.11-slim
+ 
+WORKDIR /app
+
+# Install dependencies first (cached layer)
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+ 
+# Copy source
+COPY agent.py .
+COPY .env .
+# Create volume mount point for persistence
+RUN mkdir -p /app/data
+ 
+EXPOSE 8000
+ 
+CMD ["python", "agent.py"]

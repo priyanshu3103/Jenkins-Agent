@@ -1,0 +1,423 @@
+2026-03-12 20:17:50,315 [INFO] ============================================================
+2026-03-12 20:17:50,315 [INFO]   Jenkins Build Failure AI Agent  started
+2026-03-12 20:17:50,315 [INFO]   Jenkins : https://jenkins.example.com
+2026-03-12 20:17:50,315 [INFO]   Slack   : (console only)
+2026-03-12 20:17:50,315 [INFO]   Interval: 300s
+2026-03-12 20:17:50,315 [INFO] ============================================================
+2026-03-12 20:17:50,315 [INFO] Loaded 0 previously seen build IDs.
+2026-03-12 20:17:50,486 [WARNING] Jenkins request failed for : HTTPSConnectionPool(host='jenkins.example.com', port=443): Max retries exceeded with url: /api/json (Caused by NameResolutionError("HTTPSConnection(host='jenkins.example.com', port=443): Failed to resolve 'jenkins.example.com' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-03-12 20:17:50,486 [WARNING] No jobs found. Check your Jenkins URL and credentials.
+2026-03-12 20:17:50,486 [INFO] Sleeping 300s until next poll...
+2026-03-12 20:40:39,311 [INFO] ============================================================
+2026-03-12 20:40:39,311 [INFO]   Jenkins Build Failure AI Agent  started
+2026-03-12 20:40:39,311 [INFO]   Jenkins : https://your-jenkins.com
+2026-03-12 20:40:39,311 [INFO]   Slack   : #build-alerts
+2026-03-12 20:40:39,311 [INFO]   Interval: 300s
+2026-03-12 20:40:39,311 [INFO] ============================================================
+2026-03-12 20:40:39,311 [INFO] Loaded 0 previously seen build IDs.
+2026-03-12 20:40:39,311 [INFO] Checking 2 job(s): payment-service, auth-service
+2026-03-12 20:40:39,429 [WARNING] Jenkins request failed for job/payment-service/lastBuild: HTTPSConnectionPool(host='your-jenkins.com', port=443): Max retries exceeded with url: /job/payment-service/lastBuild/api/json (Caused by NameResolutionError("HTTPSConnection(host='your-jenkins.com', port=443): Failed to resolve 'your-jenkins.com' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-03-12 20:40:39,431 [WARNING] Jenkins request failed for job/auth-service/lastBuild: HTTPSConnectionPool(host='your-jenkins.com', port=443): Max retries exceeded with url: /job/auth-service/lastBuild/api/json (Caused by NameResolutionError("HTTPSConnection(host='your-jenkins.com', port=443): Failed to resolve 'your-jenkins.com' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-03-12 20:40:39,431 [INFO] Sleeping 300s until next poll...
+2026-03-12 20:45:39,438 [INFO] Checking 2 job(s): payment-service, auth-service
+2026-03-12 20:45:39,446 [WARNING] Jenkins request failed for job/payment-service/lastBuild: HTTPSConnectionPool(host='your-jenkins.com', port=443): Max retries exceeded with url: /job/payment-service/lastBuild/api/json (Caused by NameResolutionError("HTTPSConnection(host='your-jenkins.com', port=443): Failed to resolve 'your-jenkins.com' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-03-12 20:45:39,450 [WARNING] Jenkins request failed for job/auth-service/lastBuild: HTTPSConnectionPool(host='your-jenkins.com', port=443): Max retries exceeded with url: /job/auth-service/lastBuild/api/json (Caused by NameResolutionError("HTTPSConnection(host='your-jenkins.com', port=443): Failed to resolve 'your-jenkins.com' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-03-12 20:45:39,450 [INFO] Sleeping 300s until next poll...
+2026-03-12 20:50:48,484 [INFO] ============================================================
+2026-03-12 20:50:48,484 [INFO]   Jenkins Build Failure AI Agent  started
+2026-03-12 20:50:48,484 [INFO]   Jenkins : http://localhost:8080
+2026-03-12 20:50:48,484 [INFO]   Slack   : C0ALB65UMGC
+2026-03-12 20:50:48,484 [INFO]   Interval: 300s
+2026-03-12 20:50:48,484 [INFO] ============================================================
+2026-03-12 20:50:48,484 [INFO] Loaded 0 previously seen build IDs.
+2026-03-12 20:50:48,484 [INFO] Checking 2 job(s): payment-service, auth-service
+2026-03-12 20:50:48,577 [WARNING] Jenkins request failed for job/payment-service/lastBuild: 404 Client Error: Not Found for url: http://localhost:8080/job/payment-service/lastBuild/api/json
+2026-03-12 20:50:48,597 [WARNING] Jenkins request failed for job/auth-service/lastBuild: 404 Client Error: Not Found for url: http://localhost:8080/job/auth-service/lastBuild/api/json
+2026-03-12 20:50:48,597 [INFO] Sleeping 300s until next poll...
+2026-03-12 20:53:04,895 [INFO] ============================================================
+2026-03-12 20:53:04,895 [INFO]   Jenkins Build Failure AI Agent  started
+2026-03-12 20:53:04,895 [INFO]   Jenkins : http://localhost:8080
+2026-03-12 20:53:04,895 [INFO]   Slack   : C0ALB65UMGC
+2026-03-12 20:53:04,895 [INFO]   Interval: 300s
+2026-03-12 20:53:04,895 [INFO] ============================================================
+2026-03-12 20:53:04,895 [INFO] Loaded 0 previously seen build IDs.
+2026-03-12 20:53:04,895 [INFO] Checking 2 job(s): HK-labels,  Tk-labels
+2026-03-12 20:53:04,963 [INFO] Sleeping 300s until next poll...
+2026-03-12 20:54:56,592 [INFO] ============================================================
+2026-03-12 20:54:56,592 [INFO]   Jenkins Build Failure AI Agent  started
+2026-03-12 20:54:56,592 [INFO]   Jenkins : http://localhost:8080
+2026-03-12 20:54:56,592 [INFO]   Slack   : C0ALB65UMGC
+2026-03-12 20:54:56,592 [INFO]   Interval: 300s
+2026-03-12 20:54:56,592 [INFO] ============================================================
+2026-03-12 20:54:56,592 [INFO] Loaded 0 previously seen build IDs.
+2026-03-12 20:54:56,592 [INFO] Checking 2 job(s): HK-labels,  Tk-labels
+2026-03-12 20:54:56,616 [INFO] Sleeping 300s until next poll...
+2026-03-12 20:55:58,734 [INFO] ============================================================
+2026-03-12 20:55:58,734 [INFO]   Jenkins Build Failure AI Agent  started
+2026-03-12 20:55:58,734 [INFO]   Jenkins : http://localhost:8080
+2026-03-12 20:55:58,734 [INFO]   Slack   : C0ALB65UMGC
+2026-03-12 20:55:58,734 [INFO]   Interval: 300s
+2026-03-12 20:55:58,734 [INFO] ============================================================
+2026-03-12 20:55:58,734 [INFO] Loaded 0 previously seen build IDs.
+2026-03-12 20:55:58,734 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-12 20:55:58,766 [INFO] Sleeping 300s until next poll...
+2026-03-12 20:57:01,808 [INFO] ============================================================
+2026-03-12 20:57:01,808 [INFO]   Jenkins Build Failure AI Agent  started
+2026-03-12 20:57:01,808 [INFO]   Jenkins : http://localhost:8080
+2026-03-12 20:57:01,808 [INFO]   Slack   : #jenkins-alert
+2026-03-12 20:57:01,808 [INFO]   Interval: 300s
+2026-03-12 20:57:01,808 [INFO] ============================================================
+2026-03-12 20:57:01,809 [INFO] Loaded 0 previously seen build IDs.
+2026-03-12 20:57:01,809 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-12 20:57:01,830 [INFO] Sleeping 300s until next poll...
+2026-03-12 20:58:19,885 [INFO] ============================================================
+2026-03-12 20:58:19,885 [INFO]   Jenkins Build Failure AI Agent  started
+2026-03-12 20:58:19,885 [INFO]   Jenkins : http://localhost:8080
+2026-03-12 20:58:19,885 [INFO]   Slack   : #jenkins-alert
+2026-03-12 20:58:19,885 [INFO]   Interval: 300s
+2026-03-12 20:58:19,885 [INFO] ============================================================
+2026-03-12 20:58:19,885 [INFO] Loaded 0 previously seen build IDs.
+2026-03-12 20:58:19,885 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-12 20:58:19,909 [INFO] Sleeping 300s until next poll...
+2026-03-13 06:50:09,484 [INFO] ============================================================
+2026-03-13 06:50:09,484 [INFO]   Jenkins Build Failure AI Agent  started
+2026-03-13 06:50:09,484 [INFO]   Jenkins : http://localhost:8080
+2026-03-13 06:50:09,484 [INFO]   Slack   : #jenkins-alert
+2026-03-13 06:50:09,484 [INFO]   Interval: 300s
+2026-03-13 06:50:09,484 [INFO] ============================================================
+2026-03-13 06:50:09,484 [INFO] Loaded 0 previously seen build IDs.
+2026-03-13 06:50:09,484 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-13 06:50:09,488 [WARNING] Jenkins request failed for job/HK-labels/lastBuild: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /job/HK-labels/lastBuild/api/json (Caused by NameResolutionError("HTTPConnection(host='localhost', port=8080): Failed to resolve 'localhost' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-03-13 06:50:09,490 [WARNING] Jenkins request failed for job/Tk-labels/lastBuild: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /job/Tk-labels/lastBuild/api/json (Caused by NameResolutionError("HTTPConnection(host='localhost', port=8080): Failed to resolve 'localhost' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-03-13 06:50:09,490 [INFO] Sleeping 300s until next poll...
+2026-03-13 06:52:28,832 [INFO] ============================================================
+2026-03-13 06:52:28,832 [INFO]   Jenkins Build Failure AI Agent  started
+2026-03-13 06:52:28,832 [INFO]   Jenkins : http://localhost:8080
+2026-03-13 06:52:28,832 [INFO]   Slack   : #jenkins-alert
+2026-03-13 06:52:28,832 [INFO]   Interval: 300s
+2026-03-13 06:52:28,832 [INFO] ============================================================
+2026-03-13 06:52:28,832 [INFO] Loaded 0 previously seen build IDs.
+2026-03-13 06:52:28,832 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-13 06:52:28,835 [WARNING] Jenkins request failed for job/HK-labels/lastBuild: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /job/HK-labels/lastBuild/api/json (Caused by NameResolutionError("HTTPConnection(host='localhost', port=8080): Failed to resolve 'localhost' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-03-13 06:52:28,838 [WARNING] Jenkins request failed for job/Tk-labels/lastBuild: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /job/Tk-labels/lastBuild/api/json (Caused by NameResolutionError("HTTPConnection(host='localhost', port=8080): Failed to resolve 'localhost' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-03-13 06:52:28,838 [INFO] Sleeping 300s until next poll...
+2026-03-13 06:53:50,669 [INFO] ============================================================
+2026-03-13 06:53:50,669 [INFO]   Jenkins Build Failure AI Agent  started
+2026-03-13 06:53:50,669 [INFO]   Jenkins : http://localhost:8080
+2026-03-13 06:53:50,669 [INFO]   Slack   : #jenkins-alert
+2026-03-13 06:53:50,669 [INFO]   Interval: 300s
+2026-03-13 06:53:50,669 [INFO] ============================================================
+2026-03-13 06:53:50,669 [INFO] Loaded 0 previously seen build IDs.
+2026-03-13 06:53:50,669 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-13 06:53:50,672 [WARNING] Jenkins request failed for job/HK-labels/lastBuild: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /job/HK-labels/lastBuild/api/json (Caused by NameResolutionError("HTTPConnection(host='localhost', port=8080): Failed to resolve 'localhost' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-03-13 06:53:50,674 [WARNING] Jenkins request failed for job/Tk-labels/lastBuild: HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /job/Tk-labels/lastBuild/api/json (Caused by NameResolutionError("HTTPConnection(host='localhost', port=8080): Failed to resolve 'localhost' ([Errno 8] nodename nor servname provided, or not known)"))
+2026-03-13 06:53:50,674 [INFO] Sleeping 300s until next poll...
+2026-03-13 06:54:38,520 [INFO] ============================================================
+2026-03-13 06:54:38,521 [INFO]   Jenkins Build Failure AI Agent  started
+2026-03-13 06:54:38,521 [INFO]   Jenkins : http://127.0.0.1:8080
+2026-03-13 06:54:38,521 [INFO]   Slack   : #jenkins-alert
+2026-03-13 06:54:38,521 [INFO]   Interval: 300s
+2026-03-13 06:54:38,521 [INFO] ============================================================
+2026-03-13 06:54:38,521 [INFO] Loaded 0 previously seen build IDs.
+2026-03-13 06:54:38,521 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-13 06:54:38,679 [INFO] Sleeping 300s until next poll...
+2026-03-13 06:59:38,707 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-13 06:59:38,778 [INFO] Sleeping 300s until next poll...
+2026-03-13 07:07:34,307 [INFO] ============================================================
+2026-03-13 07:07:34,307 [INFO]   Jenkins Build Failure AI Agent  started
+2026-03-13 07:07:34,307 [INFO]   Jenkins : http://127.0.0.1:8080
+2026-03-13 07:07:34,307 [INFO]   Slack   : #jenkins-alert
+2026-03-13 07:07:34,307 [INFO]   Interval: 300s
+2026-03-13 07:07:34,307 [INFO] ============================================================
+2026-03-13 07:07:34,307 [INFO] Loaded 0 previously seen build IDs.
+2026-03-13 07:07:34,307 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-13 07:07:34,350 [INFO] Sleeping 300s until next poll...
+2026-03-13 07:09:45,907 [INFO] 🌐 API server starting on http://0.0.0.0:8000
+2026-03-13 07:17:16,924 [INFO] ============================================================
+2026-03-13 07:17:16,924 [INFO]   Jenkins Build Failure AI Agent  started
+2026-03-13 07:17:16,924 [INFO]   Jenkins : http://127.0.0.1:8080
+2026-03-13 07:17:16,924 [INFO]   Slack   : #jenkins-alert
+2026-03-13 07:17:16,924 [INFO]   Interval: 300s
+2026-03-13 07:17:16,924 [INFO] ============================================================
+2026-03-13 07:17:16,924 [INFO] Loaded 0 previously seen build IDs.
+2026-03-13 07:17:16,924 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-13 07:17:17,013 [INFO] Sleeping 300s until next poll...
+2026-03-13 07:17:17,042 [INFO] 🌐 API server starting on http://0.0.0.0:8000
+2026-03-13 07:18:24,710 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-13 07:18:24,714 [ERROR] Claude API error for HK-labels#7: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CYzEkds3qb562Qv5JW6TT'}
+2026-03-13 07:20:55,693 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-13 07:20:55,697 [ERROR] Claude API error for HK-labels#7: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CYzEwmbgzky27Fv1ypWKQ'}
+2026-03-13 07:22:17,019 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-13 07:22:17,050 [INFO] 🔴 New failure detected: HK-labels #7
+2026-03-13 07:22:17,064 [INFO] 🤖 Analyzing HK-labels #7 with Claude...
+2026-03-13 07:22:17,622 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-13 07:22:17,623 [ERROR] Claude API error for HK-labels#7: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CYzF3oirbBEYKPTDUtjtV'}
+2026-03-13 07:22:17,623 [WARNING] Analysis failed for HK-labels#7, skipping Slack notification.
+2026-03-13 07:22:17,648 [INFO] Sleeping 300s until next poll...
+2026-03-13 07:23:58,436 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-13 07:23:58,438 [ERROR] Claude API error for HK-labels#7: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CYzFBF1pEKcBT2Rs3DyYC'}
+2026-03-13 07:27:17,654 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-13 07:27:17,705 [INFO] Sleeping 300s until next poll...
+2026-03-13 07:30:09,235 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-13 07:30:09,239 [ERROR] Claude API error for HK-labels#7: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CYzFea4o1Q2sXoWX57tUy'}
+2026-03-13 07:30:13,348 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-13 07:30:13,349 [ERROR] Claude API error for HK-labels#7: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CYzFesr8HSU4EEjntzZyN'}
+2026-03-13 07:30:14,358 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-13 07:30:14,361 [ERROR] Claude API error for HK-labels#7: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CYzFexALCEZ6dvSFnAU3P'}
+2026-03-13 07:30:15,228 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-13 07:30:15,230 [ERROR] Claude API error for HK-labels#7: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CYzFf1spkTtCpzGK7yDs3'}
+2026-03-13 07:30:16,001 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-13 07:30:16,002 [ERROR] Claude API error for HK-labels#7: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CYzFf5C1EoCk48oys33vq'}
+2026-03-13 07:30:16,776 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-13 07:30:16,777 [ERROR] Claude API error for HK-labels#7: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CYzFf8WgJEqstLgGgXbRW'}
+2026-03-13 07:30:17,088 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-13 07:30:17,088 [ERROR] Claude API error for HK-labels#7: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CYzFf9s2yGEHbYqcUXAAQ'}
+2026-03-13 07:30:17,246 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-13 07:30:17,246 [ERROR] Claude API error for HK-labels#7: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CYzFfAYDSsBeyYLtDHTgn'}
+2026-03-13 07:30:17,435 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-13 07:30:17,436 [ERROR] Claude API error for HK-labels#7: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CYzFfAheATVPFY8gBqbxY'}
+2026-03-13 07:30:17,585 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-13 07:30:17,586 [ERROR] Claude API error for HK-labels#7: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CYzFfBzHKELBtr1kyP2Wi'}
+2026-03-13 07:30:17,600 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-13 07:30:17,602 [ERROR] Claude API error for HK-labels#7: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CYzFfC2GZntdCebfNdh95'}
+2026-03-13 07:30:17,760 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-13 07:30:17,761 [ERROR] Claude API error for HK-labels#7: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CYzFfCigrYEf4tPTsKNK6'}
+2026-03-13 07:30:17,958 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-13 07:30:17,959 [ERROR] Claude API error for HK-labels#7: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CYzFfDZHrANKuuCJp7yzg'}
+2026-03-13 07:30:18,063 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-13 07:30:18,064 [ERROR] Claude API error for HK-labels#7: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CYzFfE1Kv8ZxPW486AG1S'}
+2026-03-13 07:30:18,884 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-13 07:30:18,891 [ERROR] Claude API error for HK-labels#7: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CYzFfHWuqMmWkun4MRFDE'}
+2026-03-13 07:30:19,096 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-13 07:30:19,098 [ERROR] Claude API error for HK-labels#7: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CYzFfJGoQuxFLm1t6EqT7'}
+2026-03-13 07:30:19,779 [INFO] HTTP Request: POST https://api.anthropic.com/v1/messages "HTTP/1.1 400 Bad Request"
+2026-03-13 07:30:19,780 [ERROR] Claude API error for HK-labels#7: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011CYzFfMBBBQBE1R7NRPH7T'}
+2026-03-13 18:19:02,016 [INFO] ============================================================
+2026-03-13 18:19:02,017 [INFO]   Jenkins Build Failure AI Agent  started
+2026-03-13 18:19:02,017 [INFO]   Jenkins : http://127.0.0.1:8080
+2026-03-13 18:19:02,017 [INFO]   AI      : Gemini (gemini-1.5-flash)
+2026-03-13 18:19:02,017 [INFO]   Slack   : #jenkins-alert
+2026-03-13 18:19:02,017 [INFO]   Interval: 300s
+2026-03-13 18:19:02,017 [INFO] ============================================================
+2026-03-13 18:19:02,017 [INFO] Loaded 0 previously seen build IDs.
+2026-03-13 18:19:02,017 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-13 18:19:02,041 [INFO] 🔴 New failure: HK-labels #7 — triggered by Priyanshu
+2026-03-13 18:19:02,053 [INFO] 🤖 Calling Gemini for HK-labels#7...
+2026-03-13 18:19:02,263 [INFO] 🌐 API server starting on http://0.0.0.0:8000
+2026-03-13 18:19:02,926 [ERROR] Gemini HTTP ? error for HK-labels#7: 404 Client Error: Not Found for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyAvYtSr1K0qdhhnTJNS36CLJac1ue5N0GM
+2026-03-13 18:19:02,931 [WARNING] Analysis failed for HK-labels#7, skipping Slack.
+2026-03-13 18:19:02,949 [INFO] Sleeping 300s until next poll...
+2026-03-13 18:19:44,239 [INFO] ============================================================
+2026-03-13 18:19:44,239 [INFO]   Jenkins Build Failure AI Agent  started
+2026-03-13 18:19:44,239 [INFO]   Jenkins : http://127.0.0.1:8080
+2026-03-13 18:19:44,239 [INFO]   AI      : Gemini (gemini-2.0-flash)
+2026-03-13 18:19:44,239 [INFO]   Slack   : #jenkins-alert
+2026-03-13 18:19:44,239 [INFO]   Interval: 300s
+2026-03-13 18:19:44,239 [INFO] ============================================================
+2026-03-13 18:19:44,239 [INFO] Loaded 0 previously seen build IDs.
+2026-03-13 18:19:44,239 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-13 18:19:44,254 [INFO] 🔴 New failure: HK-labels #7 — triggered by Priyanshu
+2026-03-13 18:19:44,267 [INFO] 🤖 Calling Gemini for HK-labels#7...
+2026-03-13 18:19:44,418 [INFO] 🌐 API server starting on http://0.0.0.0:8000
+2026-03-13 18:19:45,441 [ERROR] Gemini HTTP ? error for HK-labels#7: 429 Client Error: Too Many Requests for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyAvYtSr1K0qdhhnTJNS36CLJac1ue5N0GM
+2026-03-13 18:19:45,444 [WARNING] Analysis failed for HK-labels#7, skipping Slack.
+2026-03-13 18:19:45,461 [INFO] Sleeping 300s until next poll...
+2026-03-13 18:20:12,436 [INFO] ============================================================
+2026-03-13 18:20:12,436 [INFO]   Jenkins Build Failure AI Agent  started
+2026-03-13 18:20:12,436 [INFO]   Jenkins : http://127.0.0.1:8080
+2026-03-13 18:20:12,437 [INFO]   AI      : Gemini (gemini-1.5-flash-latest)
+2026-03-13 18:20:12,437 [INFO]   Slack   : #jenkins-alert
+2026-03-13 18:20:12,437 [INFO]   Interval: 300s
+2026-03-13 18:20:12,437 [INFO] ============================================================
+2026-03-13 18:20:12,437 [INFO] Loaded 0 previously seen build IDs.
+2026-03-13 18:20:12,437 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-13 18:20:12,452 [INFO] 🔴 New failure: HK-labels #7 — triggered by Priyanshu
+2026-03-13 18:20:12,468 [INFO] 🤖 Calling Gemini for HK-labels#7...
+2026-03-13 18:20:12,583 [INFO] 🌐 API server starting on http://0.0.0.0:8000
+2026-03-13 18:20:14,884 [ERROR] Gemini HTTP ? error for HK-labels#7: 404 Client Error: Not Found for url: https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyAvYtSr1K0qdhhnTJNS36CLJac1ue5N0GM
+2026-03-13 18:20:14,888 [WARNING] Analysis failed for HK-labels#7, skipping Slack.
+2026-03-13 18:20:14,907 [INFO] Sleeping 300s until next poll...
+2026-03-13 18:25:14,921 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-13 18:25:14,954 [INFO] Sleeping 300s until next poll...
+2026-03-13 18:26:55,767 [INFO] ============================================================
+2026-03-13 18:26:55,768 [INFO]   Jenkins Build Failure AI Agent  started
+2026-03-13 18:26:55,768 [INFO]   Jenkins : http://127.0.0.1:8080
+2026-03-13 18:26:55,768 [INFO]   AI      : Gemini (gemini-2.5-flash)
+2026-03-13 18:26:55,768 [INFO]   Slack   : #jenkins-alert
+2026-03-13 18:26:55,768 [INFO]   Interval: 300s
+2026-03-13 18:26:55,768 [INFO] ============================================================
+2026-03-13 18:26:55,768 [INFO] Loaded 0 previously seen build IDs.
+2026-03-13 18:26:55,768 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-13 18:26:55,783 [INFO] 🔴 New failure: HK-labels #7 — triggered by Priyanshu
+2026-03-13 18:26:55,796 [INFO] 🤖 Calling Gemini for HK-labels#7...
+2026-03-13 18:26:55,949 [INFO] 🌐 API server starting on http://0.0.0.0:8000
+2026-03-13 18:27:27,757 [INFO] ============================================================
+2026-03-13 18:27:27,757 [INFO]   Jenkins Build Failure AI Agent  started
+2026-03-13 18:27:27,757 [INFO]   Jenkins : http://127.0.0.1:8080
+2026-03-13 18:27:27,757 [INFO]   AI      : Gemini (gemini-2.5-flash)
+2026-03-13 18:27:27,757 [INFO]   Slack   : #jenkins-alert
+2026-03-13 18:27:27,757 [INFO]   Interval: 300s
+2026-03-13 18:27:27,757 [INFO] ============================================================
+2026-03-13 18:27:27,757 [INFO] Loaded 0 previously seen build IDs.
+2026-03-13 18:27:27,757 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-13 18:27:27,771 [INFO] 🔴 New failure: HK-labels #7 — triggered by Priyanshu
+2026-03-13 18:27:27,788 [INFO] 🤖 Calling Gemini for HK-labels#7...
+2026-03-13 18:27:27,902 [INFO] 🌐 API server starting on http://0.0.0.0:8000
+2026-03-13 18:27:34,438 [ERROR] Gemini returned non-JSON for HK-labels#7: {
+  "rootCause": "The build failed because a 'label' being validated by the `HK-labels` job contained uppercase letters, specifically within the string
+2026-03-13 18:27:34,439 [WARNING] Analysis failed for HK-labels#7, skipping Slack.
+2026-03-13 18:27:34,458 [INFO] Sleeping 300s until next poll...
+2026-03-13 18:27:39,984 [WARNING] Skipping analysis for HK-labels#7 — previous attempt failed permanently.
+2026-03-13 18:27:43,422 [WARNING] Skipping analysis for HK-labels#7 — previous attempt failed permanently.
+2026-03-13 18:27:43,977 [WARNING] Skipping analysis for HK-labels#7 — previous attempt failed permanently.
+2026-03-13 18:27:44,140 [WARNING] Skipping analysis for HK-labels#7 — previous attempt failed permanently.
+2026-03-13 18:27:44,337 [WARNING] Skipping analysis for HK-labels#7 — previous attempt failed permanently.
+2026-03-13 18:27:44,519 [WARNING] Skipping analysis for HK-labels#7 — previous attempt failed permanently.
+2026-03-13 18:27:44,692 [WARNING] Skipping analysis for HK-labels#7 — previous attempt failed permanently.
+2026-03-13 18:27:44,867 [WARNING] Skipping analysis for HK-labels#7 — previous attempt failed permanently.
+2026-03-13 18:27:45,041 [WARNING] Skipping analysis for HK-labels#7 — previous attempt failed permanently.
+2026-03-13 18:28:52,195 [WARNING] Skipping analysis for HK-labels#7 — previous attempt failed permanently.
+2026-03-13 18:29:35,964 [WARNING] Skipping analysis for HK-labels#7 — previous attempt failed permanently.
+2026-03-13 18:32:34,460 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-13 18:32:34,485 [INFO] Sleeping 300s until next poll...
+2026-03-13 18:37:34,386 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-13 18:37:34,417 [INFO] Sleeping 300s until next poll...
+2026-03-13 18:42:34,417 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-13 18:42:34,449 [INFO] Sleeping 300s until next poll...
+2026-03-13 18:47:34,447 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-13 18:47:34,487 [INFO] Sleeping 300s until next poll...
+2026-03-13 18:52:34,519 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-13 18:52:34,554 [INFO] Sleeping 300s until next poll...
+2026-03-13 18:57:34,558 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-13 18:57:34,592 [INFO] Sleeping 300s until next poll...
+2026-03-13 19:02:34,595 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-13 19:02:34,630 [INFO] Sleeping 300s until next poll...
+2026-03-13 19:07:34,640 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-13 19:07:34,673 [INFO] Sleeping 300s until next poll...
+2026-03-13 19:12:34,674 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-13 19:12:34,707 [INFO] Sleeping 300s until next poll...
+2026-03-13 19:17:34,711 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-13 19:17:34,743 [INFO] Sleeping 300s until next poll...
+2026-03-13 19:22:17,740 [WARNING] Jenkins request failed for job/HK-labels/lastBuild: 403 Client Error: Forbidden for url: http://127.0.0.1:8080/job/HK-labels/lastBuild/api/json
+2026-03-13 19:22:17,751 [WARNING] Jenkins request failed for job/Tk-labels/lastBuild: 403 Client Error: Forbidden for url: http://127.0.0.1:8080/job/Tk-labels/lastBuild/api/json
+2026-03-13 19:22:24,614 [WARNING] Jenkins request failed for job/HK-labels/lastBuild: 403 Client Error: Forbidden for url: http://127.0.0.1:8080/job/HK-labels/lastBuild/api/json
+2026-03-13 19:22:24,627 [WARNING] Jenkins request failed for job/Tk-labels/lastBuild: 403 Client Error: Forbidden for url: http://127.0.0.1:8080/job/Tk-labels/lastBuild/api/json
+2026-03-13 19:22:29,648 [WARNING] Jenkins request failed for job/HK-labels/lastBuild: 403 Client Error: Forbidden for url: http://127.0.0.1:8080/job/HK-labels/lastBuild/api/json
+2026-03-13 19:22:29,661 [WARNING] Jenkins request failed for job/Tk-labels/lastBuild: 403 Client Error: Forbidden for url: http://127.0.0.1:8080/job/Tk-labels/lastBuild/api/json
+2026-03-13 19:22:32,169 [WARNING] Jenkins request failed for job/HK-labels/lastBuild: 403 Client Error: Forbidden for url: http://127.0.0.1:8080/job/HK-labels/lastBuild/api/json
+2026-03-13 19:22:32,182 [WARNING] Jenkins request failed for job/Tk-labels/lastBuild: 403 Client Error: Forbidden for url: http://127.0.0.1:8080/job/Tk-labels/lastBuild/api/json
+2026-03-13 19:22:32,633 [WARNING] Jenkins request failed for job/HK-labels/lastBuild: 403 Client Error: Forbidden for url: http://127.0.0.1:8080/job/HK-labels/lastBuild/api/json
+2026-03-13 19:22:32,646 [WARNING] Jenkins request failed for job/Tk-labels/lastBuild: 403 Client Error: Forbidden for url: http://127.0.0.1:8080/job/Tk-labels/lastBuild/api/json
+2026-03-13 19:22:32,804 [WARNING] Jenkins request failed for job/HK-labels/lastBuild: 403 Client Error: Forbidden for url: http://127.0.0.1:8080/job/HK-labels/lastBuild/api/json
+2026-03-13 19:22:32,816 [WARNING] Jenkins request failed for job/Tk-labels/lastBuild: 403 Client Error: Forbidden for url: http://127.0.0.1:8080/job/Tk-labels/lastBuild/api/json
+2026-03-13 19:22:32,952 [WARNING] Jenkins request failed for job/HK-labels/lastBuild: 403 Client Error: Forbidden for url: http://127.0.0.1:8080/job/HK-labels/lastBuild/api/json
+2026-03-13 19:22:32,966 [WARNING] Jenkins request failed for job/Tk-labels/lastBuild: 403 Client Error: Forbidden for url: http://127.0.0.1:8080/job/Tk-labels/lastBuild/api/json
+2026-03-13 19:22:33,107 [WARNING] Jenkins request failed for job/HK-labels/lastBuild: 403 Client Error: Forbidden for url: http://127.0.0.1:8080/job/HK-labels/lastBuild/api/json
+2026-03-13 19:22:33,116 [WARNING] Jenkins request failed for job/Tk-labels/lastBuild: 403 Client Error: Forbidden for url: http://127.0.0.1:8080/job/Tk-labels/lastBuild/api/json
+2026-03-13 19:22:34,773 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-13 19:22:34,800 [WARNING] Jenkins request failed for job/HK-labels/lastBuild: 403 Client Error: Forbidden for url: http://127.0.0.1:8080/job/HK-labels/lastBuild/api/json
+2026-03-13 19:22:34,813 [WARNING] Jenkins request failed for job/Tk-labels/lastBuild: 403 Client Error: Forbidden for url: http://127.0.0.1:8080/job/Tk-labels/lastBuild/api/json
+2026-03-13 19:22:34,814 [INFO] Sleeping 300s until next poll...
+2026-03-13 19:23:29,743 [WARNING] Jenkins request failed for job/HK-labels/lastBuild: 403 Client Error: Forbidden for url: http://127.0.0.1:8080/job/HK-labels/lastBuild/api/json
+2026-03-13 19:23:29,756 [WARNING] Jenkins request failed for job/Tk-labels/lastBuild: 403 Client Error: Forbidden for url: http://127.0.0.1:8080/job/Tk-labels/lastBuild/api/json
+2026-03-13 19:24:47,635 [INFO] ============================================================
+2026-03-13 19:24:47,636 [INFO]   Jenkins Build Failure AI Agent  started
+2026-03-13 19:24:47,636 [INFO]   Jenkins : http://127.0.0.1:8080
+2026-03-13 19:24:47,636 [INFO]   AI      : Gemini (gemini-2.5-flash)
+2026-03-13 19:24:47,636 [INFO]   Slack   : #jenkins-alert
+2026-03-13 19:24:47,636 [INFO]   Interval: 300s
+2026-03-13 19:24:47,636 [INFO] ============================================================
+2026-03-13 19:24:47,636 [INFO] Loaded 0 previously seen build IDs.
+2026-03-13 19:24:47,636 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-13 19:24:47,852 [INFO] 🌐 API server starting on http://0.0.0.0:8000
+2026-03-13 19:24:48,268 [INFO] 🔴 New failure: HK-labels #7 — triggered by Priyanshu
+2026-03-13 19:24:48,294 [INFO] 🤖 Calling Gemini for HK-labels#7...
+2026-03-13 19:24:54,775 [ERROR] Gemini returned non-JSON for HK-labels#7: {
+  "rootCause": "The 'Execute shell' script failed because a validation check detected uppercase letters in a 'label' string. The specific string identified was 'export CATALINA
+2026-03-13 19:24:54,775 [WARNING] Analysis failed for HK-labels#7, skipping Slack.
+2026-03-13 19:24:54,796 [INFO] 🔴 New failure: Tk-labels #2 — triggered by Priyanshu Barapatre
+2026-03-13 19:24:54,817 [INFO] 🤖 Calling Gemini for Tk-labels#2...
+2026-03-13 19:25:00,606 [INFO] ✅ Gemini analysis complete for Tk-labels#2 — severity: Medium
+2026-03-13 19:25:01,108 [INFO] Slack notification sent for Tk-labels#2
+2026-03-13 19:25:03,116 [INFO] Sleeping 300s until next poll...
+2026-03-13 19:26:12,609 [WARNING] Skipping analysis for HK-labels#7 — previous attempt failed permanently.
+2026-03-13 20:18:44,195 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-13 20:18:44,810 [INFO] Sleeping 300s until next poll...
+2026-03-13 20:22:36,348 [INFO] ============================================================
+2026-03-13 20:22:36,348 [INFO]   Jenkins Build Failure AI Agent  started
+2026-03-13 20:22:36,348 [INFO]   Jenkins : https://hkbuild.hotelkeyapp.com/
+2026-03-13 20:22:36,348 [INFO]   AI      : Gemini (gemini-2.5-flash)
+2026-03-13 20:22:36,348 [INFO]   Slack   : #jenkins-alert
+2026-03-13 20:22:36,348 [INFO]   Interval: 300s
+2026-03-13 20:22:36,348 [INFO] ============================================================
+2026-03-13 20:22:36,349 [INFO] Loaded 2 previously seen build IDs.
+2026-03-13 20:22:36,349 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-13 20:22:36,523 [INFO] 🌐 API server starting on http://0.0.0.0:8000
+2026-03-13 20:22:37,884 [WARNING] Jenkins request failed for job/HK-labels/lastBuild: 404 Client Error: Not Found for url: https://hkbuild.hotelkeyapp.com/job/HK-labels/lastBuild/api/json
+2026-03-13 20:22:38,981 [WARNING] Jenkins request failed for job/Tk-labels/lastBuild: 404 Client Error: Not Found for url: https://hkbuild.hotelkeyapp.com/job/Tk-labels/lastBuild/api/json
+2026-03-13 20:22:38,985 [INFO] Sleeping 300s until next poll...
+2026-03-13 20:23:58,661 [INFO] ============================================================
+2026-03-13 20:23:58,661 [INFO]   Jenkins Build Failure AI Agent  started
+2026-03-13 20:23:58,661 [INFO]   Jenkins : https://hkbuild.hotelkeyapp.com/
+2026-03-13 20:23:58,661 [INFO]   AI      : Gemini (gemini-2.5-flash)
+2026-03-13 20:23:58,661 [INFO]   Slack   : #jenkins-alert
+2026-03-13 20:23:58,661 [INFO]   Interval: 300s
+2026-03-13 20:23:58,661 [INFO] ============================================================
+2026-03-13 20:23:58,661 [INFO] Loaded 2 previously seen build IDs.
+2026-03-13 20:23:58,662 [INFO] Checking 1 job(s): API-HK-TimeKeeping-DailyBuild
+2026-03-13 20:23:58,908 [INFO] 🌐 API server starting on http://0.0.0.0:8000
+2026-03-13 20:24:00,144 [INFO] 🔴 New failure: API-HK-TimeKeeping-DailyBuild #1829 — triggered by Upstream: HK-API-Release-4x
+2026-03-13 20:24:02,785 [INFO] 🤖 Calling Gemini for API-HK-TimeKeeping-DailyBuild#1829...
+2026-03-13 20:24:10,960 [ERROR] Gemini returned non-JSON for API-HK-TimeKeeping-DailyBuild#1829: {
+  "rootCause": "The AWS CodeBuild agent's Java environment is failing to validate the SSL certificate for Maven Central (repo.maven.apache.org), preventing the download
+2026-03-13 20:24:10,960 [WARNING] Analysis failed for API-HK-TimeKeeping-DailyBuild#1829, skipping Slack.
+2026-03-13 20:24:10,961 [INFO] Sleeping 300s until next poll...
+2026-03-13 20:25:58,496 [INFO] ============================================================
+2026-03-13 20:25:58,496 [INFO]   Jenkins Build Failure AI Agent  started
+2026-03-13 20:25:58,496 [INFO]   Jenkins : https://hkbuild.hotelkeyapp.com
+2026-03-13 20:25:58,497 [INFO]   AI      : Gemini (gemini-2.5-flash)
+2026-03-13 20:25:58,497 [INFO]   Slack   : #jenkins-alert
+2026-03-13 20:25:58,497 [INFO]   Interval: 300s
+2026-03-13 20:25:58,497 [INFO] ============================================================
+2026-03-13 20:25:58,497 [INFO] Loaded 2 previously seen build IDs.
+2026-03-13 20:25:58,497 [INFO] Checking 1 job(s): API-HK-TimeKeeping-DailyBuild
+2026-03-13 20:25:58,678 [INFO] 🌐 API server starting on http://0.0.0.0:8000
+2026-03-13 20:26:00,242 [INFO] 🔴 New failure: API-HK-TimeKeeping-DailyBuild #1829 — triggered by Upstream: HK-API-Release-4x
+2026-03-13 20:26:02,619 [INFO] 🤖 Calling Gemini for API-HK-TimeKeeping-DailyBuild#1829...
+2026-03-13 20:26:09,824 [ERROR] Gemini returned non-JSON for API-HK-TimeKeeping-DailyBuild#1829: {
+  "rootCause": "The build failed because the Java environment on the AWS CodeBuild agent could not establish a trusted connection to Maven Central (repo.maven.apache.org). This is indicated by the 'PKIX path building failed: sun.security.provider.certpath.SunCertPathBuilderException: unable to fin
+2026-03-13 20:26:09,824 [WARNING] Analysis failed for API-HK-TimeKeeping-DailyBuild#1829, skipping Slack.
+2026-03-13 20:26:09,825 [INFO] Sleeping 300s until next poll...
+2026-03-13 20:27:15,942 [INFO] ============================================================
+2026-03-13 20:27:15,943 [INFO]   Jenkins Build Failure AI Agent  started
+2026-03-13 20:27:15,943 [INFO]   Jenkins : http://127.0.0.1:8080
+2026-03-13 20:27:15,943 [INFO]   AI      : Gemini (gemini-2.5-flash)
+2026-03-13 20:27:15,943 [INFO]   Slack   : #jenkins-alert
+2026-03-13 20:27:15,943 [INFO]   Interval: 300s
+2026-03-13 20:27:15,943 [INFO] ============================================================
+2026-03-13 20:27:15,943 [INFO] Loaded 2 previously seen build IDs.
+2026-03-13 20:27:15,943 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-13 20:27:16,115 [INFO] 🌐 API server starting on http://0.0.0.0:8000
+2026-03-13 20:27:17,512 [INFO] Sleeping 300s until next poll...
+2026-03-13 20:27:24,119 [INFO] 🤖 Calling Gemini for Tk-labels#2...
+2026-03-13 20:27:30,642 [INFO] ✅ Gemini analysis complete for Tk-labels#2 — severity: Medium
+2026-03-13 20:29:15,589 [INFO] 🤖 Calling Gemini for HK-labels#7...
+2026-03-13 20:29:22,044 [ERROR] Gemini returned non-JSON for HK-labels#7: {
+  "rootCause": "The 'HK-labels' job failed because a label, specifically 'export CATALINA_OPTS=$CATALINA_OPTS -Xms8192m -Dfile.encoding=UTF-8', contained uppercase letters, violating a defined validation rule within the build script.",
+  "responsible": "Priyanshu",
+  "responsibleEmail": "",
+  "res
+2026-03-13 20:29:31,772 [WARNING] Skipping analysis for HK-labels#7 — previous attempt failed permanently.
+2026-03-13 20:32:13,286 [WARNING] Skipping analysis for HK-labels#7 — previous attempt failed permanently.
+2026-03-13 20:32:17,516 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-13 20:32:17,546 [INFO] Sleeping 300s until next poll...
+2026-03-13 20:37:17,455 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-13 20:37:18,881 [INFO] Sleeping 300s until next poll...
+2026-03-13 20:42:18,879 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-13 20:42:19,961 [INFO] Sleeping 300s until next poll...
+2026-03-13 20:47:19,962 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-13 20:47:21,226 [INFO] Sleeping 300s until next poll...
+2026-03-13 20:52:21,228 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-13 20:52:22,421 [INFO] Sleeping 300s until next poll...
+2026-03-13 20:57:22,421 [INFO] Checking 2 job(s): HK-labels, Tk-labels
+2026-03-13 20:57:22,452 [INFO] Sleeping 300s until next poll...
