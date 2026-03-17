@@ -8,7 +8,7 @@ RUN pip install --no-cache-dir -r requirements.txt
  
 # Copy source
 COPY agent.py .
-COPY .env .
+#COPY .env .
 # Create volume mount point for persistence
 RUN mkdir -p /app/data
  
