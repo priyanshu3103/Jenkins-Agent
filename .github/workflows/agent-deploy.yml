@@ -95,16 +95,17 @@ jobs:
           sed -i "s|tag:.*# backend|tag: ${{ needs.build.outputs.tag }} # backend|g" ${{ env.VALUES_FILE }}
           echo "✅ Updated image tags to ${{ needs.build.outputs.tag }}"
 
-      # ============ COMMIT AND PUSH ============
+        # ============ COMMIT AND PUSH CHANGES ============
+
       - name: Commit and push values.yaml
         env:
-          TOKEN: ${{ secrets.ARGOCD_REPO_TOKEN }}
+            TOKEN: ${{ secrets.ARGOCD_REPO_TOKEN }}
         run: |
-          cd dev-argocd
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git remote set-url origin https://x-access-token:${TOKEN}@github.com/${{ env.ARGOCD_REPO }}.git
-          git add ${{ env.VALUES_FILE }}
-          git commit -m "chore: update jenkins-agent image tags to ${{ needs.build.outputs.tag }}" || exit 0
-          git push origin master > /dev/null 2>&1
-          echo "✅ Pushed to ${{ env.ARGOCD_REPO }}"
+            cd dev-argocd
+            git config user.name "GitHub Actions"
+            git config user.email "actions@github.com"
+            git remote set-url origin https://${{ github.actor }}:${TOKEN}@github.com/${{ env.ARGOCD_REPO }}.git
+            git add ${{ env.VALUES_FILE }}
+            git commit -m "chore: update jenkins-agent image tags to ${{ needs.build.outputs.tag }}" || exit 0
+            git push origin master
+            echo "✅ Pushed to ${{ env.ARGOCD_REPO }}"
