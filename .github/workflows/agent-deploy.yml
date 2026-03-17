@@ -7,7 +7,7 @@ on:
 
 env:
   DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
-  ARGOCD_REPO: https://github.com/priyanshu3103/dev-argocd.git
+  ARGOCD_REPO: priyanshu3103/dev-argocd
   VALUES_FILE: charts/jenkins-agent/values.yaml
 
 jobs:
@@ -38,8 +38,8 @@ jobs:
       - name: Build and push frontend
         uses: docker/build-push-action@v5
         with:
-          context:
-            file: ./frontend/Dockerfile.frontend
+          context: ./frontend              # ← context and file separate
+          file: ./frontend/Dockerfile.frontend
           push: true
           tags: |
             ${{ env.DOCKERHUB_USERNAME }}/jenkins-agent-frontend:${{ steps.tag.outputs.tag }}
@@ -49,8 +49,8 @@ jobs:
       - name: Build and push backend
         uses: docker/build-push-action@v5
         with:
-          context:
-            file: ./backend/Dockerfile.backend
+          context: ./backend              # ← context and file separate
+          file: ./backend/Dockerfile.backend
           push: true
           tags: |
             ${{ env.DOCKERHUB_USERNAME }}/jenkins-agent-backend:${{ steps.tag.outputs.tag }}
@@ -61,7 +61,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: ${{ env.ARGOCD_REPO }}
-          #token: ${{ secrets.ARGOCD_REPO_TOKEN }}
+          token: ${{ secrets.ARGOCD_REPO_TOKEN }}    # ← uncomment this
           path: argocd-repo
 
       # ============ UPDATE HELM VALUES ============
