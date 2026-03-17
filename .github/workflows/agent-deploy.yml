@@ -1,0 +1,89 @@
+name: Build and Deploy Agent
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
+  ARGOCD_REPO: https://github.com/priyanshu3103/dev-argocd.git
+  VALUES_FILE: charts/jenkins-agent/values.yaml
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # ============ CHECKOUT ============
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # ============ SET IMAGE TAG ============
+      - name: Set image tag
+        id: tag
+        run: |
+          SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
+          echo "tag=${SHORT_SHA}" >> $GITHUB_OUTPUT
+          echo "Image tag: ${SHORT_SHA}"
+
+      # ============ LOGIN TO DOCKERHUB ============
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # ============ BUILD AND PUSH FRONTEND ============
+      - name: Build and push frontend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          push: true
+          tags: |
+            ${{ env.DOCKERHUB_USERNAME }}/jenkins-agent-frontend:${{ steps.tag.outputs.tag }}
+            ${{ env.DOCKERHUB_USERNAME }}/jenkins-agent-frontend:latest
+
+      # ============ BUILD AND PUSH BACKEND ============
+      - name: Build and push backend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          push: true
+          tags: |
+            ${{ env.DOCKERHUB_USERNAME }}/jenkins-agent-backend:${{ steps.tag.outputs.tag }}
+            ${{ env.DOCKERHUB_USERNAME }}/jenkins-agent-backend:latest
+
+      # ============ CHECKOUT ARGOCD REPO ============
+      - name: Checkout ArgoCD repo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.ARGOCD_REPO }}
+          #token: ${{ secrets.ARGOCD_REPO_TOKEN }}
+          path: argocd-repo
+
+      # ============ UPDATE HELM VALUES ============
+      - name: Update image tags in values.yaml
+        run: |
+          cd argocd-repo
+
+          # Update frontend tag
+          sed -i "s|tag:.*# frontend|tag: ${{ steps.tag.outputs.tag }} # frontend|g" \
+            ${{ env.VALUES_FILE }}
+
+          # Update backend tag
+          sed -i "s|tag:.*# backend|tag: ${{ steps.tag.outputs.tag }} # backend|g" \
+            ${{ env.VALUES_FILE }}
+
+          echo "=== Updated values.yaml ==="
+          cat ${{ env.VALUES_FILE }}
+
+      # ============ COMMIT AND PUSH ============
+      - name: Commit and push values.yaml
+        run: |
+          cd argocd-repo
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add ${{ env.VALUES_FILE }}
+          git commit -m "chore: update jenkins-agent image tags to ${{ steps.tag.outputs.tag }}" || exit 0
+          git push origin master
