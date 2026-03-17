@@ -4,6 +4,12 @@ on:
   push:
     branches:
       - master
+  workflow_dispatch:          # ← adds manual trigger button
+    inputs:
+      tag:
+        description: 'Custom image tag (leave empty to use git SHA)'
+        required: false
+        default: ''
 
 env:
   DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
@@ -23,9 +29,14 @@ jobs:
       - name: Set image tag
         id: tag
         run: |
-          SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
-          echo "tag=${SHORT_SHA}" >> $GITHUB_OUTPUT
-          echo "Image tag: ${SHORT_SHA}"
+          if [ -n "${{ github.event.inputs.tag }}" ]; then
+            echo "tag=${{ github.event.inputs.tag }}" >> $GITHUB_OUTPUT
+            echo "Image tag: ${{ github.event.inputs.tag }}"
+          else
+            SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
+            echo "tag=${SHORT_SHA}" >> $GITHUB_OUTPUT
+            echo "Image tag: ${SHORT_SHA}"
+          fi
 
       # ============ LOGIN TO DOCKERHUB ============
       - name: Login to DockerHub
@@ -38,7 +49,7 @@ jobs:
       - name: Build and push frontend
         uses: docker/build-push-action@v5
         with:
-          context: ./frontend              # ← context and file separate
+          context: ./frontend
           file: ./frontend/Dockerfile.frontend
           push: true
           tags: |
@@ -49,7 +60,7 @@ jobs:
       - name: Build and push backend
         uses: docker/build-push-action@v5
         with:
-          context: ./backend              # ← context and file separate
+          context: ./backend
           file: ./backend/Dockerfile.backend
           push: true
           tags: |
@@ -61,7 +72,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: ${{ env.ARGOCD_REPO }}
-          token: ${{ secrets.ARGOCD_REPO_TOKEN }}    # ← uncomment this
+          token: ${{ secrets.ARGOCD_REPO_TOKEN }}
           path: argocd-repo
 
       # ============ UPDATE HELM VALUES ============
