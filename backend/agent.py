@@ -651,8 +651,12 @@ def create_app():
         if not jenkins_url:
             raise HTTPException(status_code=400, detail="jenkins_url required")
 
-        if not isinstance(jenkins_url, str) or not jenkins_url.startswith("http"):
+        if not isinstance(jenkins_url, str):
             raise HTTPException(status_code=400, detail="Invalid Jenkins URL")
+
+        # 🔥 Auto-add protocol
+        if not jenkins_url.startswith("http"):
+            jenkins_url = "http://" + jenkins_url
 
         # 🔹 Normalize (remove trailing slash)
         jenkins_url = jenkins_url.rstrip("/")
