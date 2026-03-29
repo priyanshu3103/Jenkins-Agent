@@ -72,6 +72,15 @@ jobs:
           push: true
           provenance: false
           sbom: false
+          build-args: |
+            JENKINS_ID=${{ vars.JENKINS_ID }}
+            JENKINS_CREDS=${{ secrets.JENKINS_CREDS }}
+            JENKINS_HOST=${{ vars.JENKINS_HOST }}
+            JENKINS_JOBS=${{ vars.JENKINS_JOBS }}
+            AGENT_API_KEY=${{ secrets.AGENT_API_KEY }}
+            GEMINI_MODEL=${{ vars.GEMINI_MODEL }}
+            SLACK_WEBHOOK_URL=${{ secrets.SLACK_WEBHOOK_URL }}
+            SLACK_CHANNEL=${{ vars.SLACK_CHANNEL }}
           tags: |
             ${{ env.DOCKERHUB_USERNAME }}/jenkins-agent-backend:${{ steps.tag.outputs.tag }}
             ${{ env.DOCKERHUB_USERNAME }}/jenkins-agent-backend:latest
