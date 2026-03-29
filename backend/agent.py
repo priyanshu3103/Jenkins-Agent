@@ -396,6 +396,7 @@ def analyze_failure(job: str, build: dict, console: str, changes: list) -> Optio
 
     trigger = get_build_triggered_by(build)
 
+
     prompt = f"""Analyze this Jenkins build failure:
 
 Job:           {job}
@@ -628,27 +629,34 @@ def run():
 
 def _build_to_dict(job_name: str, build: dict, console: str = "", changes: list = []) -> dict:
     number = build.get("number", 0)
-
+    
     branch = "unknown"
     for action in build.get("actions", []):
         for branch_info in action.get("branches", []):
             branch = branch_info.get("name", branch).replace("origin/", "")
             break
-
+        
+    # 🔥 Get trigger FIRST (needed for fallback)
+    trigger = get_build_triggered_by(build)
+    
     commit, commit_msg, author_name, author_email = "", "", "unknown", ""
+    
     if changes:
         last        = changes[-1]
         commit      = last.get("commitId", "")
         commit_msg  = last.get("message", "")
         author_name = last.get("author", "unknown")
-
-    trigger = get_build_triggered_by(build)
-
+        author_email = last.get("authorEmail", "")
+    else:
+        # 🔥 Fallback to trigger user (IMPORTANT FIX)
+        if trigger["triggerType"] == "user":
+            author_name = trigger["triggeredBy"]
+    
     cache_key = f"{job_name}#{number}"
     with _cache_lock:
         cached = _analysis_cache.get(cache_key)
     analysis = cached if isinstance(cached, dict) else None
-
+    
     return {
         "id":            cache_key,
         "job":           job_name,
