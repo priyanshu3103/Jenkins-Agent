@@ -53,7 +53,7 @@ log = logging.getLogger(__name__)
 
 # ─── Config ──────────────────────────────────────────────────────────────────
 
-JENKINS_URL       = os.getenv("JENKINS_URL", "https://jenkins.example.com")
+JENKINS_API_URL       = os.getenv("JENKINS_API_URL", "https://jenkins.example.com")
 JENKINS_USER      = os.getenv("JENKINS_USER", "admin")
 JENKINS_TOKEN     = os.getenv("JENKINS_TOKEN", "")
 SLACK_WEBHOOK_URL = os.getenv("SLACK_WEBHOOK_URL", "")
@@ -91,7 +91,7 @@ def save_seen_builds(seen: set) -> None:
 # ─── Jenkins API ─────────────────────────────────────────────────────────────
 
 def jenkins_get(path: str) -> Optional[dict]:
-    url = f"{JENKINS_URL.rstrip('/')}/{path.lstrip('/')}/api/json"
+    url = f"{JENKINS_API_URL.rstrip('/')}/{path.lstrip('/')}/api/json"
     try:
         resp = requests.get(url, auth=(JENKINS_USER, JENKINS_TOKEN), timeout=15)
         resp.raise_for_status()
@@ -113,7 +113,7 @@ def get_latest_build(job_name: str) -> Optional[dict]:
 
 
 def get_build_console(job_name: str, build_number: int) -> str:
-    url = f"{JENKINS_URL.rstrip('/')}/job/{job_name}/{build_number}/consoleText"
+    url = f"{JENKINS_API_URL.rstrip('/')}/job/{job_name}/{build_number}/consoleText"
     try:
         resp = requests.get(url, auth=(JENKINS_USER, JENKINS_TOKEN), timeout=15, stream=True)
         resp.raise_for_status()
@@ -442,7 +442,7 @@ def poll_once(seen: set) -> set:
 def run():
     log.info("=" * 60)
     log.info("  Jenkins Build Failure AI Agent  started")
-    log.info(f"  Jenkins : {JENKINS_URL}")
+    log.info(f"  Jenkins : {JENKINS_API_URL}")
     log.info(f"  AI      : Gemini ({GEMINI_MODEL})")
     log.info(f"  Slack   : {SLACK_CHANNEL if SLACK_WEBHOOK_URL else '(console only)'}")
     log.info(f"  Interval: {POLL_INTERVAL_SEC}s")
@@ -535,7 +535,7 @@ def create_app():
     def health():
         return {
             "status":    "ok",
-            "jenkins":   JENKINS_URL,
+            "jenkins":   JENKINS_API_URL,
             "ai":        f"gemini/{GEMINI_MODEL}",
             "timestamp": datetime.utcnow().isoformat(),
         }

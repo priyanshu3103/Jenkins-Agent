@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 
 // ─── Config ────────────────────────────────────────────────────────────────
 const STORAGE_KEY = "jenkins_agent_backend_url";
-const DEFAULT_URL = (typeof window !== "undefined" && window.JENKINS_API_URL) || "http://localhost:8000";
+const DEFAULT_URL = (typeof window !== "undefined" && window.JENKINS_API_URL) || "http://agent.localhost";
 
 // ─── Helpers ───────────────────────────────────────────────────────────────
 const timeAgo = (ts) => {
