@@ -240,8 +240,20 @@ JSON schema:
   "tags":              ["array", "of", "relevant", "tags"]
 }"""
 
+_gemini_lock = threading.Lock()
+_last_gemini_call = 0
+MIN_GEMINI_INTERVAL = 5  # seconds (increase if needed)
 
 def call_gemini(prompt: str) -> str:
+    with _gemini_lock:
+        global _last_gemini_call
+        now = time.time()
+        wait = MIN_GEMINI_INTERVAL - (now - _last_gemini_call)
+        if wait > 0:
+            log.info(f"⏳ Throttling Gemini call, waiting {wait:.1f}s")
+            time.sleep(wait)
+
+    _last_gemini_call = time.time()
     """Call Gemini API and return raw text response."""
     if not GEMINI_API_KEY:
         raise ValueError("GEMINI_API_KEY is not set. Get a free key at https://aistudio.google.com/apikey")
@@ -252,8 +264,8 @@ def call_gemini(prompt: str) -> str:
 
     last_error = None
 
-    # 🔁 Retry logic (2 attempts)
-    for attempt in range(2):
+    # 🔁 Retry logic (4 attempts)
+    for attempt in range(4):
         try:
             resp = requests.post(
                 url,
@@ -308,7 +320,7 @@ def call_gemini(prompt: str) -> str:
             last_error = e
 
         # ⏳ Backoff before retry
-        time.sleep(2 ** attempt)
+        time.sleep(2 + (2 ** attempt))
 
     # ❌ Final failure
     raise RuntimeError(f"Gemini failed after retries: {last_error}")
@@ -531,7 +543,7 @@ def poll_once(seen: set) -> set:
         post_to_slack(job, build, analysis)
         seen.add(uid)
         save_seen_builds(seen)
-        time.sleep(2)
+        time.sleep(5)
 
     return seen
 
