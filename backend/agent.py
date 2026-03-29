@@ -68,7 +68,7 @@ def save_runtime_config(jenkins_url: str):
 # ─── Config ──────────────────────────────────────────────────────────────────
 
 JENKINS_API_URL = load_runtime_config() or os.getenv(
-    "JENKINS_API_URL", "https://jenkins.example.com")
+    "JENKINS_API_URL", "http://jenkins:8080")
 JENKINS_USER      = os.getenv("JENKINS_USER", "admin")
 JENKINS_TOKEN     = os.getenv("JENKINS_TOKEN", "")
 SLACK_WEBHOOK_URL = os.getenv("SLACK_WEBHOOK_URL", "")
