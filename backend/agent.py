@@ -34,6 +34,7 @@ from datetime import datetime
 from typing import Optional
 import requests
 from dotenv import load_dotenv
+import re
 
 load_dotenv()
 
@@ -64,6 +65,18 @@ def save_runtime_config(jenkins_url: str):
     with open(tmp_file, "w") as f:
         json.dump({"JENKINS_API_URL": jenkins_url}, f)
     os.replace(tmp_file, CONFIG_FILE)
+
+def fix_json(text):
+    text = text.strip()
+
+    # Remove trailing garbage
+    text = re.sub(r"```.*?```", "", text, flags=re.DOTALL)
+
+    # Try to close braces if truncated
+    if text.count("{") > text.count("}"):
+        text += "}" * (text.count("{") - text.count("}"))
+
+    return text
 
 # ─── Config ──────────────────────────────────────────────────────────────────
 
@@ -396,7 +409,7 @@ Recent commits in this build:
 {changes_text}
 
 Console output (last portion):
-{console[-4000:]}"""
+{console[-1500:]}"""
 
     text = ""
 
@@ -406,6 +419,8 @@ Console output (last portion):
         log.info(f"Using Gemini model: {GEMINI_MODEL}")
         log.info(f"🤖 Calling Gemini for {cache_key}...")
         text = call_gemini(prompt)
+        text = fix_json(text)
+        result = json.loads(text)
 
         # ── Safe JSON parsing ────────────────────────────────────────────────
         result = json.loads(text)
@@ -421,9 +436,7 @@ Console output (last portion):
         return result
 
     except json.JSONDecodeError:
-        log.error(f"Gemini returned non-JSON for {cache_key}: {text[:300]}")
-        with _cache_lock:
-            _analysis_cache[cache_key] = "__error__"
+        log.warning(f"⚠️ Invalid JSON from Gemini for {cache_key}, will retry later")
         return None
 
     except requests.HTTPError as e:
