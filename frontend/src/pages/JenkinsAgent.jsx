@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 
 // ─── Config ────────────────────────────────────────────────────────────────
-const STORAGE_KEY = "jenkins_agent_backend_url";
-const DEFAULT_URL = (typeof window !== "undefined" && window.JENKINS_API_URL) || "http://agent.localhost";
+const STORAGE_KEY = "jenkins_url";
+//const DEFAULT_URL = (typeof window !== "undefined" && window.JENKINS_API_URL) || "http://agent.localhost";
 
 // ─── Helpers ───────────────────────────────────────────────────────────────
 const timeAgo = (ts) => {
@@ -48,8 +48,8 @@ const Spinner = ({ size = 14, color = "#f85149" }) => (
 );
 
 // ─── API helpers ───────────────────────────────────────────────────────────
-async function apiFetch(baseUrl, path, opts = {}) {
-  const res = await fetch(`${baseUrl}${path}`, {
+async function apiFetch(path, opts = {}) {
+  const res = await fetch(path, {
     headers: { "Content-Type": "application/json" },
     ...opts,
   });
@@ -59,7 +59,7 @@ async function apiFetch(baseUrl, path, opts = {}) {
 
 // ─── Main Component ────────────────────────────────────────────────────────
 export default function JenkinsAgent() {
-  const savedUrl = typeof window !== "undefined" ? (localStorage.getItem(STORAGE_KEY) || DEFAULT_URL) : DEFAULT_URL;
+  const savedUrl = typeof window !== "undefined" ? (localStorage.getItem(STORAGE_KEY) || "") : "";
 
   const [step, setStep]             = useState("connect");
   const [backendUrl, setBackendUrl] = useState(savedUrl);
@@ -83,7 +83,7 @@ export default function JenkinsAgent() {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (!stored) return;
     setConnecting(true);
-    apiFetch(stored, "/health")
+    apiFetch("/health")
       .then(() => {
         setBackendUrl(stored);
         setStep("dashboard");
@@ -99,11 +99,14 @@ export default function JenkinsAgent() {
     setConnecting(true);
     setConnError("");
     try {
-      await apiFetch(backendUrl, "/health");
+      await apiFetch("/api/config", {
+        method: "POST",
+        body: JSON.stringify({ jenkins_url: backendUrl }),
+      });
       localStorage.setItem(STORAGE_KEY, backendUrl);
       setStep("dashboard");
     } catch (e) {
-      setConnError(`Cannot reach backend at ${backendUrl}.\nMake sure agent.py is running.\n\n${e.message}`);
+      setConnError(`Failed to configure Jenkins at ${backendUrl}.\n\n${e.message}`);
     } finally {
       setConnecting(false);
     }
@@ -126,7 +129,7 @@ export default function JenkinsAgent() {
     setLoadingBuilds(true);
     setFetchError("");
     try {
-      const data = await apiFetch(backendUrl, "/api/builds");
+      const data = await apiFetch("/api/builds");
       const list = data.builds || [];
       setBuilds(list);
       setAnalysis(prev => {
@@ -154,7 +157,7 @@ export default function JenkinsAgent() {
     setDetail(null);
     setLoadingDetail(true);
     try {
-      const full = await apiFetch(backendUrl, `/api/builds/${build.job}/${build.number}`);
+      const full = await apiFetch(`/api/builds/${build.job}/${build.number}`);
       setDetail(full);
       if (full.analysis) setAnalysis(prev => ({ ...prev, [build.id]: full.analysis }));
     } catch {
@@ -169,7 +172,7 @@ export default function JenkinsAgent() {
   const triggerAnalysis = useCallback(async (build) => {
     setAnalyzing(build.id);
     try {
-      const data = await apiFetch(backendUrl, "/api/analyze", {
+      const data = await apiFetch("/api/analyze", {
         method: "POST",
         body: JSON.stringify({ job: build.job, build_number: build.number }),
       });
@@ -220,7 +223,7 @@ export default function JenkinsAgent() {
                 connecting ? "Reconnecting…" : "Connect backend to start"
               ) : (
                 <>
-                  <span>{backendUrl} · live</span>
+                  <span>{backendUrl} (Jenkins) · connected</span>
                   <button onClick={handleDisconnect} style={{
                     background: "none", border: "1px solid #30363d", borderRadius: 4,
                     color: "#8b949e", fontSize: 10, padding: "1px 6px",
@@ -274,12 +277,12 @@ export default function JenkinsAgent() {
               Enter the URL where <code style={{ color: "#79c0ff" }}>Jenkins</code> is running.
             </p>
 
-            <label style={{ fontSize: 11, color: "#8b949e", display: "block", marginBottom: 5 }}>Backend URL</label>
+            <label style={{ fontSize: 11, color: "#8b949e", display: "block", marginBottom: 5 }}>Jenkins URL</label>
             <input
               value={backendUrl}
               onChange={e => setBackendUrl(e.target.value)}
               onKeyDown={e => e.key === "Enter" && handleConnect()}
-              placeholder="http://localhost:8000"
+              placeholder={backendUrl || "http://jenkins.localhost"}
               disabled={connecting}
               style={{
                 width: "100%", padding: "10px 13px", borderRadius: 8, boxSizing: "border-box",
@@ -323,7 +326,7 @@ export default function JenkinsAgent() {
         <div style={{ flex: 1, padding: 32, maxWidth: 560, margin: "0 auto", width: "100%" }}>
           <h3 style={{ marginTop: 0, fontSize: 16 }}>Configuration</h3>
           {[
-            ["Backend URL",     backendUrl],
+            ["Jenkins URL",     backendUrl],
             ["Auto-refresh",    "Every 60 seconds"],
             ["Analysis engine", "Gemini (via backend)"],
             ["Slack alerts",    "Configured in .env on backend"],

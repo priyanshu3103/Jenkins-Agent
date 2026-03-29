@@ -51,9 +51,25 @@ logging.basicConfig(
 log = logging.getLogger(__name__)
 
 
+CONFIG_FILE = "runtime_config.json"
+
+def load_runtime_config():
+    if os.path.exists(CONFIG_FILE):
+        with open(CONFIG_FILE) as f:
+            data = json.load(f)
+            return data.get("JENKINS_API_URL")
+    return None
+
+def save_runtime_config(jenkins_url: str):
+    tmp_file = CONFIG_FILE + ".tmp"
+    with open(tmp_file, "w") as f:
+        json.dump({"JENKINS_API_URL": jenkins_url}, f)
+    os.replace(tmp_file, CONFIG_FILE)
+
 # ─── Config ──────────────────────────────────────────────────────────────────
 
-JENKINS_API_URL       = os.getenv("JENKINS_API_URL", "https://jenkins.example.com")
+JENKINS_API_URL = load_runtime_config() or os.getenv(
+    "JENKINS_API_URL", "https://jenkins.example.com")
 JENKINS_USER      = os.getenv("JENKINS_USER", "admin")
 JENKINS_TOKEN     = os.getenv("JENKINS_TOKEN", "")
 SLACK_WEBHOOK_URL = os.getenv("SLACK_WEBHOOK_URL", "")
@@ -63,6 +79,7 @@ JENKINS_JOBS      = os.getenv("JENKINS_JOBS", "").split(",")
 SEEN_BUILDS_FILE  = os.getenv("SEEN_BUILDS_FILE", "seen_builds.json")
 API_PORT          = int(os.getenv("API_PORT", "8000"))
 API_HOST          = os.getenv("API_HOST", "0.0.0.0")
+#CONFIG_FILE         = "runtime_config.json"
 
 # ── Gemini config ─────────────────────────────────────────────────────────────
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
@@ -70,9 +87,24 @@ GEMINI_MODEL   = os.getenv("GEMINI_MODEL", "gemini-1.5-flash")  # free & fast
 GEMINI_URL     = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent"
 
 # In-memory cache: { "job#number" -> analysis_dict | "__error__" }
+MAX_CACHE_SIZE = 1000
 _analysis_cache: dict = {}
 _cache_lock = threading.Lock()
 
+
+
+# # Create load + save helpers
+# def load_runtime_config():
+#     if os.path.exists(CONFIG_FILE):
+#         with open(CONFIG_FILE) as f:
+#             data = json.load(f)
+#             return data.get("JENKINS_API_URL")
+#     return None
+
+
+# def save_runtime_config(jenkins_url: str):
+#     with open(CONFIG_FILE, "w") as f:
+#         json.dump({"JENKINS_API_URL": jenkins_url}, f)
 
 # ─── State persistence ────────────────────────────────────────────────────────
 
@@ -84,21 +116,30 @@ def load_seen_builds() -> set:
 
 
 def save_seen_builds(seen: set) -> None:
-    with open(SEEN_BUILDS_FILE, "w") as f:
+    tmp = SEEN_BUILDS_FILE + ".tmp"
+    with open(tmp, "w") as f:
         json.dump(list(seen), f)
+    os.replace(tmp, SEEN_BUILDS_FILE)
 
-
+_config_lock = threading.Lock()
 # ─── Jenkins API ─────────────────────────────────────────────────────────────
 
 def jenkins_get(path: str) -> Optional[dict]:
-    url = f"{JENKINS_API_URL.rstrip('/')}/{path.lstrip('/')}/api/json"
-    try:
-        resp = requests.get(url, auth=(JENKINS_USER, JENKINS_TOKEN), timeout=15)
-        resp.raise_for_status()
-        return resp.json()
-    except requests.RequestException as e:
-        log.warning(f"Jenkins request failed for {path}: {e}")
-        return None
+    with _config_lock:
+        base_url = JENKINS_API_URL
+
+    url = f"{base_url.rstrip('/')}/{path.lstrip('/')}/api/json"
+
+    for _ in range(2):  # retry once
+        try:
+            resp = requests.get(url, auth=(JENKINS_USER, JENKINS_TOKEN), timeout=10)
+            resp.raise_for_status()
+            return resp.json()
+        except requests.RequestException:
+            time.sleep(1)
+
+    log.warning(f"Jenkins request failed for {path}")
+    return None
 
 
 def get_all_jobs() -> list:
@@ -113,7 +154,9 @@ def get_latest_build(job_name: str) -> Optional[dict]:
 
 
 def get_build_console(job_name: str, build_number: int) -> str:
-    url = f"{JENKINS_API_URL.rstrip('/')}/job/{job_name}/{build_number}/consoleText"
+    with _config_lock:
+        base_url = JENKINS_API_URL
+    url = f"{base_url.rstrip('/')}/job/{job_name}/{build_number}/consoleText"
     try:
         resp = requests.get(url, auth=(JENKINS_USER, JENKINS_TOKEN), timeout=15, stream=True)
         resp.raise_for_status()
@@ -206,46 +249,87 @@ def call_gemini(prompt: str) -> str:
 
     full_prompt = f"{SYSTEM_PROMPT}\n\n{prompt}"
 
-    resp = requests.post(
-        f"{GEMINI_URL}?key={GEMINI_API_KEY}",
-        json={
-            "contents": [{"parts": [{"text": full_prompt}]}],
-            "generationConfig": {
-                "maxOutputTokens": 2048,
-                "temperature": 0.1,
-            },
-        },
-        timeout=30,
-    )
-    resp.raise_for_status()
+    url = f"{GEMINI_URL}?key={GEMINI_API_KEY}"
 
-    data = resp.json()
+    last_error = None
 
-    # Check for Gemini API errors
-    if "error" in data:
-        raise ValueError(f"Gemini API error: {data['error'].get('message', 'unknown')}")
+    # 🔁 Retry logic (2 attempts)
+    for attempt in range(2):
+        try:
+            resp = requests.post(
+                url,
+                json={
+                    "contents": [{"parts": [{"text": full_prompt}]}],
+                    "generationConfig": {
+                        "maxOutputTokens": 2048,
+                        "temperature": 0.1,
+                    },
+                },
+                timeout=30,
+            )
 
-    text = data["candidates"][0]["content"]["parts"][0]["text"].strip()
+            resp.raise_for_status()
+            data = resp.json()
 
-    # Strip markdown fences if Gemini adds them
-    text = text.replace("```json", "").replace("```", "").strip()
-    return text
+            # 🔍 API-level error
+            if "error" in data:
+                raise ValueError(f"Gemini API error: {data['error'].get('message', 'unknown')}")
+
+            # 🔍 Validate structure
+            candidates = data.get("candidates")
+            if not candidates:
+                raise ValueError("No candidates returned from Gemini")
+
+            parts = candidates[0].get("content", {}).get("parts", [])
+            if not parts:
+                raise ValueError("Invalid Gemini response structure (no parts)")
+
+            text = parts[0].get("text", "").strip()
+            if not text:
+                raise ValueError("Empty response from Gemini")
+
+            # 🧹 Clean markdown fences
+            text = text.replace("```json", "").replace("```", "").strip()
+
+            return text
+
+        except requests.Timeout:
+            log.warning(f"Gemini timeout (attempt {attempt+1})")
+
+        except requests.HTTPError as e:
+            status = e.response.status_code if e.response else "?"
+            log.error(f"Gemini HTTP {status} error (attempt {attempt+1}): {e}")
+
+            # ❌ Do NOT retry for auth/quota errors
+            if status in (400, 401, 403):
+                raise
+
+        except Exception as e:
+            log.error(f"Gemini error (attempt {attempt+1}): {e}")
+            last_error = e
+
+        # ⏳ Backoff before retry
+        time.sleep(1)
+
+    # ❌ Final failure
+    raise RuntimeError(f"Gemini failed after retries: {last_error}")
 
 
 def analyze_failure(job: str, build: dict, console: str, changes: list) -> Optional[dict]:
     """Ask Gemini to analyze a build failure and return structured JSON."""
     cache_key = f"{job}#{build.get('number')}"
 
-    # Skip if already failed permanently
+    # ── Check cache (thread-safe) ────────────────────────────────────────────
     with _cache_lock:
         cached = _analysis_cache.get(cache_key)
         if cached == "__error__":
             log.warning(f"Skipping analysis for {cache_key} — previous attempt failed permanently.")
             return None
-        if cached and isinstance(cached, dict):
+        if isinstance(cached, dict):
             log.info(f"Returning cached analysis for {cache_key}")
             return cached
 
+    # ── Prepare prompt ───────────────────────────────────────────────────────
     changes_text = "\n".join(
         f"  - [{c['commitId']}] {c['author']}: {c['message']}"
         for c in changes
@@ -269,13 +353,21 @@ Console output (last portion):
 {console[-4000:]}"""
 
     text = ""
+
     try:
-        log.info(f"🤖 Calling Gemini for {job}#{build.get('number')}...")
+        log.info(f"🤖 Calling Gemini for {cache_key}...")
         text = call_gemini(prompt)
+
+        # ── Safe JSON parsing ────────────────────────────────────────────────
         result = json.loads(text)
 
+        # ── Cache result with size control ───────────────────────────────────
         with _cache_lock:
+            if len(_analysis_cache) > MAX_CACHE_SIZE:
+                _analysis_cache.pop(next(iter(_analysis_cache)))  # remove oldest
+
             _analysis_cache[cache_key] = result
+
         log.info(f"✅ Gemini analysis complete for {cache_key} — severity: {result.get('severity')}")
         return result
 
@@ -288,17 +380,20 @@ Console output (last portion):
     except requests.HTTPError as e:
         status = e.response.status_code if e.response else "?"
         log.error(f"Gemini HTTP {status} error for {cache_key}: {e}")
-        # Mark permanent failure for auth/quota errors
+
+        # Permanent failures (don’t retry)
         if status in (400, 401, 403, 429):
-            log.warning(f"Permanent error ({status}) — won't retry {cache_key}.")
             with _cache_lock:
                 _analysis_cache[cache_key] = "__error__"
+
         return None
 
     except Exception as e:
         log.error(f"Gemini error for {cache_key}: {e}")
+
         with _cache_lock:
             _analysis_cache[cache_key] = "__error__"
+
         return None
 
 
@@ -362,15 +457,16 @@ def post_to_slack(job: str, build: dict, analysis: dict) -> bool:
         "text": f"{emoji} Build failure in *{job}* — triggered by {trigger['triggeredBy']} — {sev} severity",
         "blocks": blocks,
     }
-
-    try:
-        resp = requests.post(SLACK_WEBHOOK_URL, json=payload, timeout=10)
-        resp.raise_for_status()
-        log.info(f"Slack notification sent for {job}#{build.get('number')}")
-        return True
-    except requests.RequestException as e:
-        log.error(f"Slack post failed: {e}")
-        return False
+    for _ in range(2):
+        try:
+            resp = requests.post(SLACK_WEBHOOK_URL, json=payload, timeout=10)
+            resp.raise_for_status()
+            log.info(f"Slack notification sent for {job}#{build.get('number')}")
+            return True
+        except requests.RequestException as e:
+            time.sleep(1)
+    log.error("Slack post failed after retries")
+    return False
 
 
 def print_slack_preview(job: str, build: dict, analysis: dict) -> None:
@@ -442,7 +538,9 @@ def poll_once(seen: set) -> set:
 def run():
     log.info("=" * 60)
     log.info("  Jenkins Build Failure AI Agent  started")
-    log.info(f"  Jenkins : {JENKINS_API_URL}")
+    with _config_lock:
+        current = JENKINS_API_URL
+    log.info(f"  Jenkins : {current}")
     log.info(f"  AI      : Gemini ({GEMINI_MODEL})")
     log.info(f"  Slack   : {SLACK_CHANNEL if SLACK_WEBHOOK_URL else '(console only)'}")
     log.info(f"  Interval: {POLL_INTERVAL_SEC}s")
@@ -533,11 +631,51 @@ def create_app():
 
     @app.get("/health")
     def health():
+        with _config_lock:
+            current = JENKINS_API_URL
         return {
-            "status":    "ok",
-            "jenkins":   JENKINS_API_URL,
-            "ai":        f"gemini/{GEMINI_MODEL}",
-            "timestamp": datetime.utcnow().isoformat(),
+            "status": "ok",
+            "jenkins": current,
+            "ai": f"gemini/{GEMINI_MODEL}",
+            "timestamp": datetime.utcnow().isoformat()
+        }
+
+    
+    @app.post("/api/config")
+    def set_config(data: dict):
+        global JENKINS_API_URL
+
+        jenkins_url = data.get("jenkins_url")
+
+        # 🔹 Validation
+        if not jenkins_url:
+            raise HTTPException(status_code=400, detail="jenkins_url required")
+
+        if not isinstance(jenkins_url, str) or not jenkins_url.startswith("http"):
+            raise HTTPException(status_code=400, detail="Invalid Jenkins URL")
+
+        # 🔹 Normalize (remove trailing slash)
+        jenkins_url = jenkins_url.rstrip("/")
+
+        try:
+            # 🔹 Optional: test connectivity (recommended)
+            test_resp = requests.get(f"{jenkins_url}/api/json", timeout=10)
+            test_resp.raise_for_status()
+        except Exception as e:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Cannot reach Jenkins at {jenkins_url}: {str(e)}"
+            )
+
+        # 🔹 Update runtime config
+        with _config_lock:
+            JENKINS_API_URL = jenkins_url
+            save_runtime_config(jenkins_url)
+            current = JENKINS_API_URL
+
+        return {
+            "status": "ok",
+            "jenkins": current
         }
 
     @app.get("/api/jobs")
