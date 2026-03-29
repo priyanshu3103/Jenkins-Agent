@@ -308,7 +308,7 @@ def call_gemini(prompt: str) -> str:
             last_error = e
 
         # ⏳ Backoff before retry
-        time.sleep(1)
+        time.sleep(2 ** attempt)
 
     # ❌ Final failure
     raise RuntimeError(f"Gemini failed after retries: {last_error}")
@@ -321,6 +321,9 @@ def analyze_failure(job: str, build: dict, console: str, changes: list) -> Optio
     # ── Check cache (thread-safe) ────────────────────────────────────────────
     with _cache_lock:
         cached = _analysis_cache.get(cache_key)
+        if cached == "__in_progress__":
+            log.info(f"⏳ Analysis already running for {cache_key}")
+            return None
         if cached == "__error__":
             log.warning(f"Skipping analysis for {cache_key} — previous attempt failed permanently.")
             return None
@@ -354,6 +357,8 @@ Console output (last portion):
     text = ""
 
     try:
+        with _cache_lock:
+            _analysis_cache[cache_key] = "__in_progress__"
         log.info(f"🤖 Calling Gemini for {cache_key}...")
         text = call_gemini(prompt)
 
@@ -381,7 +386,7 @@ Console output (last portion):
         log.error(f"Gemini HTTP {status} error for {cache_key}: {e}")
 
         # Permanent failures (don’t retry)
-        if status in (400, 401, 403, 429):
+        if status in (400, 401, 403):
             with _cache_lock:
                 _analysis_cache[cache_key] = "__error__"
 
@@ -389,10 +394,7 @@ Console output (last portion):
 
     except Exception as e:
         log.error(f"Gemini error for {cache_key}: {e}")
-
-        with _cache_lock:
-            _analysis_cache[cache_key] = "__error__"
-
+        # ❌ DO NOT mark as permanent (could be temporary like 429)
         return None
 
 
