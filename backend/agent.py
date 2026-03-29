@@ -32,7 +32,6 @@ import hashlib
 import threading
 from datetime import datetime
 from typing import Optional
-
 import requests
 from dotenv import load_dotenv
 
@@ -657,6 +656,11 @@ def create_app():
         # 🔥 Auto-add protocol
         if not jenkins_url.startswith("http"):
             jenkins_url = "http://" + jenkins_url
+
+        # 🔥 Fix localhost issue (IMPORTANT)
+        if "localhost" in jenkins_url or "127.0.0.1" in jenkins_url:
+            log.info(f"🔄 Converting {jenkins_url} → internal K8s service")
+        jenkins_url = "http://jenkins:8080"
 
         # 🔹 Normalize (remove trailing slash)
         jenkins_url = jenkins_url.rstrip("/")
