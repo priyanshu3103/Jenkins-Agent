@@ -727,7 +727,7 @@ def create_app():
 
         try:
             # 🔹 Optional: test connectivity (recommended)
-            test_resp = requests.get(f"{jenkins_url}/api/json", timeout=10)
+            test_resp = requests.get(f"{jenkins_url}/api/json", auth=(JENKINS_USER, JENKINS_TOKEN), timeout=10)
             test_resp.raise_for_status()
         except Exception as e:
             raise HTTPException(
