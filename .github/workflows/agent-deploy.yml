@@ -54,7 +54,7 @@ jobs:
       
       # ============ SETUP DOCKER BUILDX ============
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
       # ============ BUILD AND PUSH FRONTEND ============
       - name: Build and push frontend
         uses: docker/build-push-action@v6
