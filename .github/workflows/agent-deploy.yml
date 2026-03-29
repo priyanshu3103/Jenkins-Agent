@@ -26,7 +26,7 @@ jobs:
     steps:
       # ============ CHECKOUT ============
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # ============ SET IMAGE TAG ============
       - name: Set image tag
@@ -45,11 +45,14 @@ jobs:
 
       # ============ LOGIN TO DOCKERHUB ============
       - name: Login to DockerHub
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           username: ${{ env.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
+      
+      # ============ SETUP DOCKER BUILDX ============
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
       # ============ BUILD AND PUSH FRONTEND ============
       - name: Build and push frontend
         uses: docker/build-push-action@v5
@@ -65,7 +68,7 @@ jobs:
 
       # ============ BUILD AND PUSH BACKEND ============
       - name: Build and push backend
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: ./backend
           file: ./backend/Dockerfile.backend
@@ -93,7 +96,7 @@ jobs:
     steps:
       # ============ CHECKOUT ARGOCD REPO ============
       - name: Checkout ArgoCD repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: ${{ env.ARGOCD_REPO }}
           token: ${{ secrets.ARGOCD_REPO_TOKEN }}
