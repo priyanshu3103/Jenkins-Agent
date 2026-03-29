@@ -371,6 +371,7 @@ Console output (last portion):
     try:
         with _cache_lock:
             _analysis_cache[cache_key] = "__in_progress__"
+        log.info(f"Using Gemini model: {GEMINI_MODEL}")
         log.info(f"🤖 Calling Gemini for {cache_key}...")
         text = call_gemini(prompt)
 
